@@ -1,0 +1,24 @@
+services:
+
+  site:
+    build:
+      context: ./site
+      target: dev
+    ports:
+      - "3050:3050"
+    command: npm run dev
+    restart: always
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+
+  db:
+    image: mysql:oraclelinux9
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
