@@ -6,9 +6,7 @@ services:
     ports:
       - "3050:3000"
     environment:
-      - NODE_ENV=development
       - WATCHPACK_POLLING=true
-      - CHOKIDAR_USEPOLLING=true
     command: npm run dev
     volumes:
       - .:/usr/src
