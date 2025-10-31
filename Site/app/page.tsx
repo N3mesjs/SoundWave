@@ -1,5 +1,5 @@
 export default function App() {
   return (
-    <span></span>
+    <span>A</span>
   );
 }
