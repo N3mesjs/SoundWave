@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+"use client";
 
-function App() {
-  const [count, setCount] = useState(0)
+import React from "react";
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await fetch('http://localhost:3050/api/signin', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    console.log(data);
+    console.log("Form submitted");
 }
 
-export default App
+export default function SignIn() {
+    return (
+        <>
+            <div className="card">
+                <div className="card-header">
+                    <h1 className="title">SoundWave</h1>
+                    <img src="/logo.png" alt="SoundWave Logo" width={50} height={50}/>
+                </div>
+                <h3>Sign In to Your Account</h3>
+                <hr />
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="username">Username:</label><br />
+                    <input className="input-fields" type="text" id="username" name="username" required />
+                    <br />
+                    <label htmlFor="password">Password:</label><br />
+                    <input className="input-fields" type="password" id="password" name="password" required />
+                    <br />
+                    <button className="submit-button" type="submit">Sign In</button>
+                </form>
+            </div>
+        </>
+    );
+}
