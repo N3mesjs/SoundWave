@@ -1,14 +1,18 @@
 "use client";
 
-const handleSubmit = async () => {
-    const response = await fetch('/api/singin', {
-        method: 'POST',
+import React from "react";
+
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await fetch('/api/signin', {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
     });
     const data = await response.json();
     console.log(data);
+    console.log("Form submitted");
 }
 
 export default function SignIn() {

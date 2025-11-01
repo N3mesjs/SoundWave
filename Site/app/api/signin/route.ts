@@ -1,9 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
- 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    res.status(200).json({ message: 'Sign-in successful' });
-  } else {
-    res.status(405).json({ message: 'Method Not Allowed' });
-  }
+import { NextResponse } from 'next/server';
+
+export async function GET(request: Request) {
+  return NextResponse.json({ message: 'Sign-in successful' });
 }

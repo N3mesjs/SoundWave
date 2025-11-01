@@ -1,4 +1,5 @@
 const { BrowserWindow, app } = require('electron');
+const {shell} = require('electron');
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -9,6 +10,7 @@ function createWindow() {
     },
   });
     mainWindow.loadFile('index.html');
+    shell.openExternal('https://github.com');
 };
 
 app.whenReady().then(() => {
