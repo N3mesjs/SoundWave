@@ -11,7 +11,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         },
     });
     const data = await response.json();
-    console.log(data);
+    console.log(data.req);
     console.log("Form submitted");
 }
 
