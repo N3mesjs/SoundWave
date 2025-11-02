@@ -1,18 +1,24 @@
 "use client";
 
 import React from "react";
+import { useState } from "react";
+
+const [userName, setUserName] = useState<string>('');
+const [password, setPassword] = useState<string>('');
 
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:3050/api/signin', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const data = await response.json();
-    console.log(data.req);
-    console.log("Form submitted");
+    console.log(`Username: ${userName}, Password: ${password}`);
+
+    // const response = await fetch('http://localhost:3050/api/signin', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ username: userName, password: password }),
+    // });
+    // const text = await response.text();
+    // console.log(text);
 }
 
 export default function SignIn() {
@@ -27,10 +33,10 @@ export default function SignIn() {
                 <hr />
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="username">Username:</label><br />
-                    <input className="input-fields" type="text" id="username" name="username" required />
+                    <input className="input-fields" type="text" onChange={(e) => setUserName(e.target.value)} required />
                     <br />
                     <label htmlFor="password">Password:</label><br />
-                    <input className="input-fields" type="password" id="password" name="password" required />
+                    <input className="input-fields" type="password" onChange={(e) => setPassword(e.target.value)} required />
                     <br />
                     <button className="submit-button" type="submit">Sign In</button>
                 </form>
