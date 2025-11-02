@@ -17,7 +17,7 @@ services:
     image: mysql:oraclelinux9
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: db
+      MYSQL_DATABASE: SoundWaveDB
     ports:
       - "3306:3306"
     volumes:

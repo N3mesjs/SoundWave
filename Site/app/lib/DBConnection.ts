@@ -1,12 +1,12 @@
 import mysql from "mysql2/promise";
 
-export default async function DBConnection() {
+export default function DBConnection() {
   try {
-    const conn = await mysql.createConnection({
+    const conn = mysql.createPool({
       host: "db",
       user: "root",
       password: "root",
-      database: "db",
+      database: "SoundWaveDB",
     });
 
     return conn;
