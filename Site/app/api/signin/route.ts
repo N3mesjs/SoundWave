@@ -5,8 +5,25 @@ export async function POST(request: Request) {
   const { username, password } = body;
 
   const conn = DBConnection();
+  const query =
+    "SELECT id, username FROM users WHERE username = ? AND password = ?";
 
-  await conn.execute("INSERT INTO users (username, password) VALUES (?, ?)", [username, password])
+  const [rows, fields] = await conn.execute(query, [username, password]);
 
-  return new Response(JSON.stringify({ message: "User signed in successfully" }), { status: 200 });
+  if (rows.length > 0) {
+    return Response.json(
+      {
+        message: "Login successful",
+        user: rows[0], // Invia l'oggetto utente
+      },
+      { status: 200 }
+    );
+  } else {
+    return Response.json(
+      {
+        message: "Invalid username or password",
+      },
+      { status: 401 }
+    );
+  }
 }

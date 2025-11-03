@@ -9,7 +9,6 @@ export default function SignIn() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`Username: ${userName}, Password: ${password}`);
 
     const response = await fetch('http://localhost:3050/api/signin', {
         method: 'POST',
@@ -18,8 +17,8 @@ export default function SignIn() {
         },
         body: JSON.stringify({ username: userName, password: password }),
     });
-    const text = await response.text();
-    console.log(text);
+    const text = await response.json();
+    //console.log(text.message, text.user);
   };
   return (
     <>
