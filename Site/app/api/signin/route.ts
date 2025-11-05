@@ -2,6 +2,7 @@ import DBConnection from "../../lib/DBConnection";
 import { sign, verify } from "jsonwebtoken";
 
 export async function POST(request: Request) {
+
   let body = await request.json();
   const { username, password } = body;
 
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         message: "Login successful",
-        user: rows[0], // Invia l'oggetto utente
+        user: rows[0],
         token: token
       },
       { status: 200 }
