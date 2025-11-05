@@ -2,20 +2,6 @@
 
 import React, { use, useEffect, useState } from "react";
 import { decode } from "jsonwebtoken";
-// Source - https://stackoverflow.com/questions/12709074/how-do-you-explicitly-set-a-new-property-on-window-in-typescript
-// Posted by joshuapoehls
-// Retrieved 05/11/2025, License - CC-BY-SA 4.0
-
-declare global {
-    // Note the capital "W"
-    interface Window { 
-      electronAPI: any,
-      process: {
-        type: any;
-      }
-     }
-}
-
 
 export default function SignIn() {
   const [userName, setUserName] = useState<string>("");
@@ -23,13 +9,6 @@ export default function SignIn() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (window.electronAPI?.isElectron) {
-      console.log("Running in Electron environment");
-    } else {
-      console.log("Running in Web environment");
-    }
-    console.log(window.navigator.userAgent);
-
 
     const response = await fetch("api/signin", {
       method: "POST",
