@@ -3,6 +3,8 @@
 import React from "react";
 import { useState } from "react";
 
+import { verify } from "jsonwebtoken";
+
 export default function SignIn() {
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -18,7 +20,7 @@ export default function SignIn() {
         body: JSON.stringify({ username: userName, password: password }),
     });
     const text = await response.json();
-    //console.log(text.message, text.user);
+    console.log(text.message, text.user, text.token);
   };
   return (
     <>

@@ -1,4 +1,5 @@
 import DBConnection from "../../lib/DBConnection";
+import { sign, verify } from "jsonwebtoken";
 
 export async function POST(request: Request) {
   let body = await request.json();
@@ -11,10 +12,13 @@ export async function POST(request: Request) {
   const [rows, fields] = await conn.execute(query, [username, password]);
 
   if (rows.length > 0) {
+    const token = sign(rows[0], process.env.JWT_SECRET)
+    console.log("Generated Token:", token);
     return Response.json(
       {
         message: "Login successful",
         user: rows[0], // Invia l'oggetto utente
+        token: token
       },
       { status: 200 }
     );
