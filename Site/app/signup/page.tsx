@@ -3,8 +3,9 @@
 import React, { use, useEffect, useState } from "react";
 import { decode } from "jsonwebtoken";
 
-export default function SignIn() {
+export default function SignUp() {
   const [userName, setUserName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,11 +19,6 @@ export default function SignIn() {
       body: JSON.stringify({ username: userName, password: password }),
     });
     const text = await response.json();
-    console.log(text.message, text.user, text.token);
-    console.log(decode(text.token));
-    if(response.ok){
-      
-    }
   };
   return (
     <>
@@ -31,7 +27,7 @@ export default function SignIn() {
           <h1 className="title">SoundWave</h1>
           <img src="/logo.png" alt="SoundWave Logo" width={50} height={50} />
         </div>
-        <h3>Sign In to Your Account</h3>
+        <h3>Create a new account</h3>
         <hr />
         <form onSubmit={handleSubmit}>
           <label htmlFor="username">Username:</label>
@@ -41,6 +37,16 @@ export default function SignIn() {
             type="text"
             placeholder="username"
             onChange={(e) => setUserName(e.target.value)}
+            required
+          />
+          <br />
+          <label htmlFor="email">Email:</label>
+          <br />
+          <input
+            className="input-fields"
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <br />
@@ -55,7 +61,7 @@ export default function SignIn() {
           />
           <br />
           <button className="submit-button" type="submit">
-            Sign In
+            Sign Up
           </button>
         </form>
       </div>
