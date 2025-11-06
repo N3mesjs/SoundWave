@@ -5,20 +5,27 @@ import { decode } from "jsonwebtoken";
 
 export default function SignUp() {
   const [userName, setUserName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [Email, setEmail] = useState<string>("");
+  const [passWord, setPassword] = useState<string>("");
+
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const response = await fetch("api/signin", {
+    const response = await fetch("api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username: userName, password: password }),
+      body: JSON.stringify({ username: userName, email: Email, password: passWord }),
     });
     const text = await response.json();
+    if(!response.ok){
+      setErrorMessage(text.message)
+    }else {
+      console.log(text.message);
+    }
   };
   return (
     <>
@@ -60,9 +67,11 @@ export default function SignUp() {
             required
           />
           <br />
+            {errorMessage !== "" ? <span className="error-message">{errorMessage}</span> : "" }
           <button className="submit-button" type="submit">
             Sign Up
           </button>
+          <div className="cardFooter"><span>Already have an account?</span><a href="/signin">Sign In page</a></div>
         </form>
       </div>
     </>

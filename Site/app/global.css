@@ -1,9 +1,11 @@
 :root {
-    --site-primary-color: #0E0D0B;
-    --site-secondary-color: #12110E;
-    --site-accent-color: #171611;
-    --site-highlight-color: #0A0A09;
-    --site-mark-color: #FF6F61;
+    --primary-color: #0E0D0B;
+    --secondary-color: #12110E;
+    --accent-color: #171611;
+    --highlight-color: #0A0A09;
+    --mark-color: #FF6F61;
+    --primary-text-color: white;
+    --secondary-text-color: #656565;
 }
 
 
@@ -15,7 +17,7 @@
 }
 
 body {
-    background-color: var(--site-primary-color);
+    background-color: var(--primary-color);
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     height: 100vh;
@@ -31,7 +33,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: var(--site-secondary-color);
+    background-color: var(--secondary-color);
     width: 600px;
 
     padding: 2rem;
@@ -65,7 +67,7 @@ body {
 .card hr {
     width: 100%;
     margin: 1.5rem 0;
-    border: 0.5px solid var(--site-primary-color);
+    border: 0.5px solid var(--primary-color);
 }
 form {
     width: 100%;
@@ -80,21 +82,37 @@ form {
     border: none;
     outline: none;
     font-size: 1.5rem;
-    background-color: var(--site-accent-color);
+    background-color: var(--accent-color);
     color: white;
 }
 
 .card .submit-button {
-    margin-top: 3rem;
+    margin-top: 0.5rem;
     padding: 15px 20px;
     border: none;
     border-radius: 8px;
-    background-color: var(--site-highlight-color);
+    background-color: var(--highlight-color);
     color: white;
     font-size: 1.5rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 .card .submit-button:hover {
-    background-color: var(--site-mark-color);
-}   
+    background-color: var(--mark-color);
+}
+
+.error-message{
+    text-align: center;
+    color: var(--mark-color);
+}
+
+.cardFooter {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.cardFooter a{
+    color: var(--secondary-text-color)
+}

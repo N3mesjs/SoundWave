@@ -2,26 +2,30 @@
 
 import React, { use, useEffect, useState } from "react";
 import { decode } from "jsonwebtoken";
+import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 export default function SignIn() {
   const [userName, setUserName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [passWord, setPassword] = useState<string>("");
+
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMessage("");
 
     const response = await fetch("api/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username: userName, password: password }),
+      body: JSON.stringify({ username: userName, password: passWord }),
     });
     const text = await response.json();
-    console.log(text.message, text.user, text.token);
-    console.log(decode(text.token));
-    if(response.ok){
-      
+    if(!response.ok){
+      setErrorMessage(text.message);
+    } else {
+      console.log(text.message);
     }
   };
   return (
@@ -54,9 +58,11 @@ export default function SignIn() {
             required
           />
           <br />
+          {errorMessage !== "" ? <div className="error-message">{errorMessage}</div> : "" }
           <button className="submit-button" type="submit">
             Sign In
           </button>
+          <div className="cardFooter"><span>Already have an account?</span><a href="/signin">Sign In page</a></div>
         </form>
       </div>
     </>
