@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     } else {
       const newUserId = uuidv4();
       const token = sign(
-        { id: newUserId, username: rows[0].username },
+        { id: newUserId },
         process.env.JWT_SECRET
       );
       return Response.json(

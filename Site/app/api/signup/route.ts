@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 
   const conn = DBConnection();
   const findUsername = "SELECT * FROM users WHERE username = ?";
-  const saveUser = "INSERT INTO users (id, username, email, password) VALUES(?, ?, ?, ?)";
+  const saveUser = "INSERT INTO users (uuid, username, email, password) VALUES(?, ?, ?, ?)";
 
   const [rows, fields] = await conn.execute(findUsername, [username]);
 
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
 
     const token = sign(
-        { id: newUserId, username: username },
+        { id: newUserId },
         process.env.JWT_SECRET
     );
     return Response.json(
