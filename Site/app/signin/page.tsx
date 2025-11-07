@@ -1,8 +1,7 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
-import { decode } from "jsonwebtoken";
-import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { redirect } from 'next/navigation'
 
 export default function SignIn() {
   const [userName, setUserName] = useState<string>("");
@@ -25,7 +24,7 @@ export default function SignIn() {
     if(!response.ok){
       setErrorMessage(text.message);
     } else {
-      console.log(text.message);
+      redirect('/home')
     }
   };
   return (
@@ -62,7 +61,7 @@ export default function SignIn() {
           <button className="submit-button" type="submit">
             Sign In
           </button>
-          <div className="cardFooter"><span>Already have an account?</span><a href="/signin">Sign In page</a></div>
+          <div className="cardFooter"><span>Don't have an account?</span><a href="/signup">Sign up page</a></div>
         </form>
       </div>
     </>

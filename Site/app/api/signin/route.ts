@@ -13,21 +13,12 @@ export async function POST(request: Request) {
   const [rows, fields] = await conn.execute(query, [username]);
 
   if ((rows as any[]).length > 0) {
-    if (!(await argon2.verify(rows[0].password, password))) {
-      return Response.json(
-        { message: "Invalid username or password" },
-        {
-          status: 401,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    } else {
-      const newUserId = uuidv4();
+    if (await argon2.verify(rows[0].password, password)) {
+      const cookieAge = (3600 * 24)*30; 
       const token = sign(
-        { id: newUserId },
-        process.env.JWT_SECRET
+        { id: rows[0].uuid, username: rows[0].username },
+        process.env.JWT_SECRET,
+        { expiresIn: cookieAge }
       );
       return Response.json(
         {
@@ -37,14 +28,24 @@ export async function POST(request: Request) {
           status: 200,
           headers: {
             "Content-Type": "application/json",
-            'Set-Cookie': `session-token=${token}; HttpOnly; Path=/; Max-Age=3600; SameSite=Strict`
+            'Set-Cookie': `session-token=${token}; HttpOnly; Path=/; Max-Age=${cookieAge}; SameSite=Strict`
+          },
+        }
+      );
+    } else {
+      return Response.json(
+        { message: "Invalid Username or Password!" },
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
           },
         }
       );
     }
   } else {
     return Response.json(
-      {message: "Wrong Username or Password!"}, 
+      {message: "Invalid Username or Password!"}, 
       {
       status: 401,
       headers: {

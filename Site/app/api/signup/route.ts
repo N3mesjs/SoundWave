@@ -26,14 +26,13 @@ export async function POST(request: Request) {
   } else {
     const hashedPassword = await argon2.hash(password);
     const newUserId = uuidv4();
-
+    const cookieAge = (3600 * 24)*30; 
     await conn.execute(saveUser, [newUserId, username, email, hashedPassword]);
 
-
-
     const token = sign(
-        { id: newUserId },
-        process.env.JWT_SECRET
+        { id: newUserId, username: username },
+        process.env.JWT_SECRET,
+        {expiresIn: cookieAge}
     );
     return Response.json(
       {message: "User created successfully"}, 
@@ -41,7 +40,7 @@ export async function POST(request: Request) {
         status: 200,
         headers: {
           "Content-Type": "application/json",
-          'Set-Cookie': `session-token=${token}; HttpOnly; Path=/; Max-Age=3600; SameSite=Strict`
+          'Set-Cookie': `session-token=${token}; HttpOnly; Path=/; Max-Age=${cookieAge}; SameSite=Strict`
         }
       }
     );

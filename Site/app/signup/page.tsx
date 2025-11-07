@@ -1,6 +1,7 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
+import { redirect } from 'next/navigation'
 import { decode } from "jsonwebtoken";
 
 export default function SignUp() {
@@ -24,7 +25,7 @@ export default function SignUp() {
     if(!response.ok){
       setErrorMessage(text.message)
     }else {
-      console.log(text.message);
+      redirect('/home');
     }
   };
   return (
@@ -71,7 +72,7 @@ export default function SignUp() {
           <button className="submit-button" type="submit">
             Sign Up
           </button>
-          <div className="cardFooter"><span>Already have an account?</span><a href="/signin">Sign In page</a></div>
+          <div className="cardFooter"><span>Already have an account?</span><a href="/signin">Sign in page</a></div>
         </form>
       </div>
     </>
