@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     if (await argon2.verify(rows[0].password, password)) {
       const cookieAge = (3600 * 24)*30; 
       const token = sign(
-        { id: rows[0].uuid, username: rows[0].username },
+        { id: rows[0].uuid, username: rows[0].username, avatar: rows[0].avatar_url },
         process.env.JWT_SECRET,
         { expiresIn: cookieAge }
       );

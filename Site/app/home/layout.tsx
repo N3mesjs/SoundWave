@@ -1,6 +1,7 @@
 import "../global.css";
 
 import Header from "../components/Header";
+import { logout } from '../auth/actions'
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -18,7 +19,7 @@ export default async function RootLayout({
     if (cookieToken) {
         const payload = decode(cookieToken.value);
         if (payload && typeof payload === 'object') {
-            user = { id: payload.id, username: payload.username };
+            user = { id: payload.id, username: payload.username, avatar: payload.avatar };
             console.log(`User authenticated: ${user.id} ${user.username}`);
         }
     } 

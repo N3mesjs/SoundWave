@@ -2,7 +2,6 @@
 
 import React, { use, useEffect, useState } from "react";
 import { redirect } from 'next/navigation'
-import { decode } from "jsonwebtoken";
 
 export default function SignUp() {
   const [userName, setUserName] = useState<string>("");
