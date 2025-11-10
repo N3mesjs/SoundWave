@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from 'next/link'
+
 import { useState, useRef, useEffect, MouseEvent } from "react";
 import { logout } from "../auth/actions"
 
@@ -17,12 +19,13 @@ export default function Header({ userData }: HeaderProps) {
   const userBarRef = useRef<HTMLDivElement>(null);
 
   const toogleUserBar = (event: React.MouseEvent) => {
+    event.stopPropagation();
     setUserBar((prev) => !prev);
     console.log(userBar);
   };
 
   useEffect(() => {
-    const checkClickUserBar = (event: MouseEvent<HTMLElement>) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         userBarRef.current &&
         !userBarRef.current.contains(event.target as Node)
@@ -30,10 +33,12 @@ export default function Header({ userData }: HeaderProps) {
         setUserBar(false);
     };
 
-    document.addEventListener("mousedown", checkClickUserBar);
+    if (userBar) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
 
     return () => {
-      document.removeEventListener("mousedown", checkClickUserBar);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -59,8 +64,8 @@ export default function Header({ userData }: HeaderProps) {
           ref={userBarRef}
           className={`userUtils ${userBar ? "hidden" : ""}`}>
           <ul className="userUtilsList">
-            <li><a className="listElement" id="settings" href="/home/setting">Settings</a></li>
-            <li><a className="listElement" id="logout" onClick={logout}>Log Out</a></li>
+            <li><Link className="listElement" id="settings" href="/home/setting">Settings</Link></li>
+            <li className="listElement" id="logout" onClick={logout}>Log Out</li>
           </ul>
         </div>
       </div>
