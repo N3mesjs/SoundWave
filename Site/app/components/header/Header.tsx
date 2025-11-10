@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useState, useRef, useEffect, MouseEvent } from "react";
-import { logout } from "../auth/actions";
-import useDebounce from "../hooks/useDebounce";
+import { logout } from "../../auth/actions";
+import useDebounce from "../../hooks/useDebounce";
 
 type HeaderProps = {
   userData: {
