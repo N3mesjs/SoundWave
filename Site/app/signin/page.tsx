@@ -43,6 +43,7 @@ export default function SignIn() {
             className="input-fields"
             type="text"
             placeholder="username"
+            value={userName}
             onChange={(e) => setUserName(e.target.value)}
             required
           />
@@ -53,6 +54,7 @@ export default function SignIn() {
             className="input-fields"
             type="password"
             placeholder="password"
+            value={passWord}
             onChange={(e) => setPassword(e.target.value)}
             required
           />

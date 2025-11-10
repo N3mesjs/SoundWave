@@ -43,6 +43,7 @@ export default function SignUp() {
             className="input-fields"
             type="text"
             placeholder="username"
+            value={userName}
             onChange={(e) => setUserName(e.target.value)}
             required
           />
@@ -53,6 +54,7 @@ export default function SignUp() {
             className="input-fields"
             type="email"
             placeholder="Email"
+            value={Email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -63,6 +65,7 @@ export default function SignUp() {
             className="input-fields"
             type="password"
             placeholder="password"
+            value={passWord}
             onChange={(e) => setPassword(e.target.value)}
             required
           />

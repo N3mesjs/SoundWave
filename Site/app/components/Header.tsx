@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import Link from 'next/link'
+import Link from "next/link";
 
 import { useState, useRef, useEffect, MouseEvent } from "react";
-import { logout } from "../auth/actions"
+import { logout } from "../auth/actions";
+import useDebounce from "../hooks/useDebounce";
 
 type HeaderProps = {
   userData: {
@@ -15,42 +16,49 @@ type HeaderProps = {
 };
 
 export default function Header({ userData }: HeaderProps) {
-  const [userBar, setUserBar] = useState<boolean>(false);
-  const userBarRef = useRef<HTMLDivElement>(null);
+  const [userMenu, setUserMenu] = useState<boolean>(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const toogleUserBar = (event: React.MouseEvent) => {
+  const toogleuserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    setUserBar((prev) => !prev);
-    console.log(userBar);
+    setUserMenu((prev) => !prev);
+    console.log(userMenu);
   };
 
+  useDebounce<string>("cacca", 400)
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: Event) => {
       if (
-        userBarRef.current &&
-        !userBarRef.current.contains(event.target as Node)
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
       )
-        setUserBar(false);
+        setUserMenu(false);
     };
 
-    if (userBar) {
-      document.addEventListener("mousedown", handleClickOutside);
+    if (userMenu) {
+      document.addEventListener("click", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [userMenu]);
 
   return (
     <div className="header">
-      <div className="logo">
-        <div className="img-logo-container">
-          <Image src="/logo.png" alt="logo" fill />
+      <Link href="/home">
+        <div className="logo">
+          <div className="img-logo-container">
+            <Image src="/logo.png" alt="logo" fill />
+          </div>
+          <h1>SoundWave</h1>
         </div>
-        <h1>SoundWave</h1>
+      </Link>
+      <div className="searchArea">
+        <input placeholder="What do you want to play? ...." value=""/>
       </div>
-      <div className="userArea" onClick={toogleUserBar}>
+      <button className="userArea" onClick={toogleuserMenu}>
         <div className="img-logo-container">
           <Image
             className="avatar"
@@ -59,15 +67,21 @@ export default function Header({ userData }: HeaderProps) {
             fill
           />
         </div>
-        <h3>{userData.username}</h3>
-        <div
-          ref={userBarRef}
-          className={`userUtils ${userBar ? "hidden" : ""}`}>
-          <ul className="userUtilsList">
-            <li><Link className="listElement" id="settings" href="/home/setting">Settings</Link></li>
-            <li className="listElement" id="logout" onClick={logout}>Log Out</li>
-          </ul>
-        </div>
+        <h2>{userData.username}</h2>
+      </button>
+      <div ref={userMenuRef} className={`userMenu ${userMenu ? "show" : ""}`}>
+        <ul className="userMenuList">
+          <li>
+            <Link className="listElement" id="settings" href="/home/settings">
+              Settings
+            </Link>
+          </li>
+          <li>
+            <button className="listElement" id="logout" onClick={logout}>
+              Log Out
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   );
