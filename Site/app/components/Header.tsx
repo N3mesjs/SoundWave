@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useRef, useEffect, MouseEvent } from "react";
+import { logout } from "../auth/actions"
 
 type HeaderProps = {
   userData: {
@@ -54,9 +55,14 @@ export default function Header({ userData }: HeaderProps) {
           />
         </div>
         <h3>{userData.username}</h3>
-      </div>
-      <div ref={userBarRef} className={`userUtils ${userBar ? "hidden" : ""}`}>
-        awd
+        <div
+          ref={userBarRef}
+          className={`userUtils ${userBar ? "hidden" : ""}`}>
+          <ul className="userUtilsList">
+            <li><a className="listElement" id="settings" href="/home/setting">Settings</a></li>
+            <li><a className="listElement" id="logout" onClick={logout}>Log Out</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   );

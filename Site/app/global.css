@@ -6,6 +6,8 @@
     --mark-color: #FF6F61;
     --primary-text-color: white;
     --secondary-text-color: #656565;
+    --logout-color: #cb0303;
+    --logout-color-hover: #af0404;
 }
 
 
@@ -185,7 +187,61 @@ form {
     right: 1rem;
     margin-top: 1rem;
     width: fit-content(300px);
-    padding: 2rem;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
 
-    background-color: var(--highlight-color);
+    background-color: var(--secondary-color);
+}
+
+.userUtilsList {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.listElement {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    background-color: var(--secondary-color);
+    border-radius: 0.5rem;
+    transition: background-color ease 0.3s;
+    gap: 0.5rem
+}
+.listElement:hover{
+    background-color: var(--accent-color);
+}
+.userUtilsList #logout {
+    background-color: var(--logout-color);
+    transition: background-color ease 0.3s;
+}
+.userUtilsList #logout:hover {
+    background-color: var(--logout-color-hover);
+}
+
+.userUtilsList #settings::before {
+    content: '';
+    width: 1em;
+    height: 1em;
+
+    background-image: url("/icons/settings-icon.svg");
+    
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.userUtilsList #logout::before {
+    content: '';
+    width: 1em;
+    height: 1em;
+    
+    background-image: url("/icons/logout.svg");
+    
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
