@@ -4,7 +4,6 @@ import styles from "./SearchBar.module.css";
 
 import { useEffect, useState, ChangeEvent } from "react";
 import useDebounce from "../../hooks/useDebounce";
-import { text } from "stream/consumers";
 
 export default function SearchBar() {
     const [textArea, setTextArea] = useState<string>("");
@@ -15,9 +14,14 @@ export default function SearchBar() {
     useEffect(() => {
 
       const fetchResults = async () => {
-        const response = await fetch(`api/search/${debounceValue}`);
-        const data = response.json();
-        console.log(data.message)
+        const response = await fetch(`api/search?query=${debounceValue}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        const data = await response.json();
+        console.log(data);
       }
 
       if(debounceValue !== ""){
