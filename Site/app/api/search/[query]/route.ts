@@ -1,25 +1,24 @@
-import { NextResponse } from "next/server";
-
 export async function GET(
-  request: Request,
-  { params }: { params: { query: string } }
+  _request: Request,
+  { params }: { params: Promise<{ query: string }> }
 ) {
-  // Ora 'params' sarà popolato correttamente perché non ci sono più conflitti.
-  const { query } = params;
-
-  // Questo console.log adesso stamperà il valore corretto!
-  console.log("Query ricevuta dalla rotta dinamica:", query);
-
+  const { query } = await params;
+  console.log(query);
   if (!query) {
-    return NextResponse.json(
-      { error: "Query parameter is missing in the URL path." },
-      { status: 400 }
+    return Response.json(
+      { message: query },
+      {
+        status: 500,
+      }
+    );
+  } else {
+    return Response.json(
+      { message: query },
+      {
+        status: 200,
+      }
     );
   }
-
-  // Il tuo test
-  return NextResponse.json({ message: query });
 }
-
 
 // https://api-v2.soundcloud.com/tracks?q=${process.env.SOUNDCLOUD_CLIENTID}&access=playable&limit=3
