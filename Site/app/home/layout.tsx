@@ -20,7 +20,7 @@ export default async function RootLayout({
         const payload = decode(cookieToken.value);
         if (payload && typeof payload === 'object') {
             user = { id: payload.id, username: payload.username, avatar: payload.avatar };
-            console.log(`User authenticated: ${user.id} ${user.username}`);
+            //console.log(`User authenticated: ${user.id} ${user.username}`);
         }
     } 
 

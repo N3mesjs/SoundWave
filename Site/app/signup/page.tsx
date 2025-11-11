@@ -1,7 +1,8 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
+import styles from "../sign.module.css";
 
 export default function SignUp() {
   const [userName, setUserName] = useState<string>("");
@@ -18,29 +19,33 @@ export default function SignUp() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username: userName, email: Email, password: passWord }),
+      body: JSON.stringify({
+        username: userName,
+        email: Email,
+        password: passWord,
+      }),
     });
     const text = await response.json();
-    if(!response.ok){
-      setErrorMessage(text.message)
-    }else {
-      redirect('/home');
+    if (!response.ok) {
+      setErrorMessage(text.message);
+    } else {
+      redirect("/home");
     }
   };
   return (
     <>
-      <div className="card">
-        <div className="card-header">
-          <h1 className="title">SoundWave</h1>
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <h1 className={styles.title}>SoundWave</h1>
           <img src="/logo.png" alt="SoundWave Logo" width={50} height={50} />
         </div>
         <h3>Create a new account</h3>
         <hr />
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="username">Username:</label>
           <br />
           <input
-            className="input-fields"
+            className={styles.inputFields}
             type="text"
             placeholder="username"
             value={userName}
@@ -51,7 +56,7 @@ export default function SignUp() {
           <label htmlFor="email">Email:</label>
           <br />
           <input
-            className="input-fields"
+            className={styles.inputFields}
             type="email"
             placeholder="Email"
             value={Email}
@@ -62,7 +67,7 @@ export default function SignUp() {
           <label htmlFor="password">Password:</label>
           <br />
           <input
-            className="input-fields"
+            className={styles.inputFields}
             type="password"
             placeholder="password"
             value={passWord}
@@ -70,11 +75,18 @@ export default function SignUp() {
             required
           />
           <br />
-            {errorMessage !== "" ? <span className="error-message">{errorMessage}</span> : "" }
-          <button className="submit-button" type="submit">
+          {errorMessage !== "" ? (
+            <span className={styles.errorMessage}>{errorMessage}</span>
+          ) : (
+            ""
+          )}
+          <button className={styles.submitButton} type="submit">
             Sign Up
           </button>
-          <div className="cardFooter"><span>Already have an account?</span><a href="/signin">Sign in page</a></div>
+          <div className={styles.cardFooter}>
+            <span>Already have an account?</span>
+            <a href="/signin">Sign in page</a>
+          </div>
         </form>
       </div>
     </>

@@ -12,6 +12,7 @@ services:
       DATABASE_USER_NAME: "root"
       DATABASE_USER_PASSWORD: "root"
       JWT_SECRET: "2QSkFobLj9Z!l&pgnP$96kDagU$aNZ^Z$xH9riXmz@dg4ZDZ$0Dse6zddF$sOrx8#8&GWXixT$TUr48mj8lCPp1UB1y^NDLjADyphlowZBYL^PIME7X9BsiZuR$u1$p5"
+      SOUNDCLOUD_CLIENTID: "MaZ7bR62GvbulJgV8EUjQnHfbZGDEKaI"
     command: npm run dev
     volumes:
       - .:/app

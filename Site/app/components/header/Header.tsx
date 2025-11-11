@@ -1,11 +1,12 @@
 "use client";
+import styles from "./Header.module.css"
 
 import Image from "next/image";
 import Link from "next/link";
 
 import { useState, useRef, useEffect, MouseEvent } from "react";
 import { logout } from "../../auth/actions";
-import useDebounce from "../../hooks/useDebounce";
+import SearchBar from "../searchBar/SearchBar";
 
 type HeaderProps = {
   userData: {
@@ -22,10 +23,7 @@ export default function Header({ userData }: HeaderProps) {
   const toogleuserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setUserMenu((prev) => !prev);
-    console.log(userMenu);
   };
-
-  useDebounce<string>("cacca", 400)
 
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
@@ -46,22 +44,20 @@ export default function Header({ userData }: HeaderProps) {
   }, [userMenu]);
 
   return (
-    <div className="header">
+    <div className={styles.header}>
       <Link href="/home">
-        <div className="logo">
-          <div className="img-logo-container">
+        <div className={styles.logo}>
+          <div className={styles.imgLogoContainer}>
             <Image src="/logo.png" alt="logo" fill />
           </div>
           <h1>SoundWave</h1>
         </div>
       </Link>
-      <div className="searchArea">
-        <input placeholder="What do you want to play? ...." value=""/>
-      </div>
-      <button className="userArea" onClick={toogleuserMenu}>
-        <div className="img-logo-container">
+      <SearchBar />
+      <button className={styles.userArea} onClick={toogleuserMenu}>
+        <div className={styles.imgLogoContainer}>
           <Image
-            className="avatar"
+            className={styles.avatar}
             src="/default/defaultAvatar.png"
             alt="alt user avatar"
             fill
@@ -69,15 +65,15 @@ export default function Header({ userData }: HeaderProps) {
         </div>
         <h2>{userData.username}</h2>
       </button>
-      <div ref={userMenuRef} className={`userMenu ${userMenu ? "show" : ""}`}>
-        <ul className="userMenuList">
+      <div ref={userMenuRef} className={`${styles.userMenu} ${userMenu ? styles.show : ""}`}>
+        <ul className={styles.userMenuList}>
           <li>
-            <Link className="listElement" id="settings" href="/home/settings">
+            <Link className={`${styles.listElement} ${styles.settingsButton}`} id="settings" href="/home/settings">
               Settings
             </Link>
           </li>
           <li>
-            <button className="listElement" id="logout" onClick={logout}>
+            <button className={`${styles.listElement} ${styles.logoutButton}`} id="logout" onClick={logout}>
               Log Out
             </button>
           </li>

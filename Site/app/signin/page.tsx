@@ -1,7 +1,8 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
+import styles from "../sign.module.css";
 
 export default function SignIn() {
   const [userName, setUserName] = useState<string>("");
@@ -21,26 +22,26 @@ export default function SignIn() {
       body: JSON.stringify({ username: userName, password: passWord }),
     });
     const text = await response.json();
-    if(!response.ok){
+    if (!response.ok) {
       setErrorMessage(text.message);
     } else {
-      redirect('/home')
+      redirect("/home");
     }
   };
   return (
     <>
-      <div className="card">
-        <div className="card-header">
-          <h1 className="title">SoundWave</h1>
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <h1 className={styles.title}>SoundWave</h1>
           <img src="/logo.png" alt="SoundWave Logo" width={50} height={50} />
         </div>
         <h3>Sign In to Your Account</h3>
         <hr />
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="username">Username:</label>
           <br />
           <input
-            className="input-fields"
+            className={styles.inputFields}
             type="text"
             placeholder="username"
             value={userName}
@@ -51,7 +52,7 @@ export default function SignIn() {
           <label htmlFor="password">Password:</label>
           <br />
           <input
-            className="input-fields"
+            className={styles.inputFields}
             type="password"
             placeholder="password"
             value={passWord}
@@ -59,11 +60,18 @@ export default function SignIn() {
             required
           />
           <br />
-          {errorMessage !== "" ? <div className="error-message">{errorMessage}</div> : "" }
-          <button className="submit-button" type="submit">
+          {errorMessage !== "" ? (
+            <div className={styles.errorMessage}>{errorMessage}</div>
+          ) : (
+            ""
+          )}
+          <button className={styles.submitButton} type="submit">
             Sign In
           </button>
-          <div className="cardFooter"><span>Don't have an account?</span><a href="/signup">Sign up page</a></div>
+          <div className={styles.cardFooter}>
+            <span>Don't have an account?</span>
+            <a href="/signup">Sign up page</a>
+          </div>
         </form>
       </div>
     </>
