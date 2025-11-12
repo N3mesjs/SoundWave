@@ -20,8 +20,11 @@ export default function SearchBar() {
             "Content-Type": "application/json"
           }
         });
-        const data = await response.json();
-        console.log(data);
+
+        if(response.ok){
+          const data = await response.json();
+          console.log(data);
+        }
       }
 
       if(debounceValue !== ""){
