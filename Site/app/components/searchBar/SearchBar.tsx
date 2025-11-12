@@ -9,7 +9,7 @@ export default function SearchBar() {
     const [textArea, setTextArea] = useState<string>("");
     const [results, setResults] = useState<[]>([]);
 
-    const debounceValue = useDebounce(textArea, 1000)
+    const debounceValue = useDebounce(textArea, 1000);
 
     useEffect(() => {
 
@@ -23,7 +23,8 @@ export default function SearchBar() {
 
         if(response.ok){
           const data = await response.json();
-          console.log(data);
+          setResults(data.collection)
+          //console.log(results)
         }
       }
 
@@ -37,7 +38,11 @@ export default function SearchBar() {
       <div className={styles.searchContainer}>
         <input placeholder="What do you want to play? ...." value={textArea} onChange={(e: ChangeEvent<HTMLInputElement>) => setTextArea(e.target.value)}/>
         <div className={styles.resultsContainer}>
-          wad
+          <ul className={styles.songsList}>
+            {results.length !== 0 ? 
+            results.map((song: any, i: number) => {
+              return <li key={i}>{song.title}<img src={song.artwork_url}/></li>}) : ""}
+          </ul>
         </div>
       </div>
     </div>

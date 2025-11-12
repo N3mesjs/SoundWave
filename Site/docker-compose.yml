@@ -13,6 +13,10 @@ services:
       DATABASE_USER_PASSWORD: "root"
       JWT_SECRET: "2QSkFobLj9Z!l&pgnP$96kDagU$aNZ^Z$xH9riXmz@dg4ZDZ$0Dse6zddF$sOrx8#8&GWXixT$TUr48mj8lCPp1UB1y^NDLjADyphlowZBYL^PIME7X9BsiZuR$u1$p5"
       SOUNDCLOUD_CLIENTID: "MaZ7bR62GvbulJgV8EUjQnHfbZGDEKaI"
+      S3_ACCOUNTID: "42638091bd50041556fe463f5986b64b"
+      S3_API: "https://42638091bd50041556fe463f5986b64b.r2.cloudflarestorage.com"
+      S3_ACCESSKEYID: "b175f95fb327b321125f4465cc481fe3"
+      S3_SECRECTKEY: "12be0ca40cfeebc2d064f4712fbf95d62ecb595850765752e8fcfb7aad422fe8"
     command: npm run dev
     volumes:
       - .:/app
