@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   const query = searchParams.get('query');
   
   const clientID = process.env.SOUNDCLOUD_CLIENTID
-  const soundcloudAPIUrl = `https://api-v2.soundcloud.com/search/tracks?q=${query}&client_id=${clientID}&access=playable&limit=3`
+  const soundcloudAPIUrl = `https://api-v2.soundcloud.com/search/tracks?q=${query}&client_id=${clientID}&access=playable&limit=5`
   console.log(query);
   if (!query) {
     return Response.json(
