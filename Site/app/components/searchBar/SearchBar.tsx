@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link"
+import { redirect } from "next/navigation";
 
 import styles from "./SearchBar.module.css";
 
-import { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import useDebounce from "../../hooks/useDebounce";
 
 export default function SearchBar() {
@@ -16,7 +17,7 @@ export default function SearchBar() {
 
   useEffect(() => {
     const fetchResults = async () => {
-      const response = await fetch(`/api/search?query="${debounceValue}"`, {
+      const response = await fetch(`/api/search?query=${debounceValue}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -37,25 +38,35 @@ export default function SearchBar() {
     }
   }, [debounceValue]);
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(results.length !== 0) {
+      setTextArea("");
+      redirect(`/home/search/${debounceValue}`)
+    }
+  }
+
   return (
     <div className={styles.searchArea}>
       <div className={styles.searchContainer}>
-        <input
+        <form onSubmit={handleSubmit}>
+          <input
           placeholder="What do you want to play? ...."
           value={textArea}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setTextArea(e.target.value)
           }
         />
+        <button type="submit" />
+        </form>
         <div
           className={`${styles.resultsContainer} ${
-            results.length !== 0 ? styles.show : ""
+            results.length !== 0 && textArea !== "" ? styles.show : ""
           }`}
         >
           <ul className={styles.songsList}>
             {results.length !== 0
               ? results.map((song: any, i: number) => {
-                  console.log(song);
                   return (
                     <li key={i} className={styles.listElement}>
                       <Link href={`/home/tracks/${song.id}`} className={styles.songElement} onClick={()=>setTextArea("")}>

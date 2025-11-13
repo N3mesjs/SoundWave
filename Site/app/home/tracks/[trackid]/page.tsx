@@ -12,10 +12,10 @@ export default async function TrackPage({
   let track;
 
 
-async function getStreamUrl(trackId) {
+async function getStreamUrl(trackid) {
   // 1. Ottieni i dati della traccia
   let response = await fetch(
-    `https://api-v2.soundcloud.com/tracks/${trackId}?client_id=${clientID}`
+    `https://api-v2.soundcloud.com/tracks/${trackid}?client_id=${clientID}`
   );
   const track = await response.json();
   
