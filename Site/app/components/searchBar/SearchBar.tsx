@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link"
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import styles from "./SearchBar.module.css";
@@ -40,24 +40,24 @@ export default function SearchBar() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(results.length !== 0) {
+    if (results.length !== 0) {
       setTextArea("");
-      redirect(`/home/search/${debounceValue}`)
+      redirect(`/home/search/${debounceValue}`);
     }
-  }
+  };
 
   return (
     <div className={styles.searchArea}>
       <div className={styles.searchContainer}>
         <form onSubmit={handleSubmit}>
           <input
-          placeholder="What do you want to play? ...."
-          value={textArea}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setTextArea(e.target.value)
-          }
-        />
-        <button type="submit" />
+            placeholder="What do you want to play? ...."
+            value={textArea}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setTextArea(e.target.value)
+            }
+          />
+          <button type="submit" />
         </form>
         <div
           className={`${styles.resultsContainer} ${
@@ -69,9 +69,18 @@ export default function SearchBar() {
               ? results.map((song: any, i: number) => {
                   return (
                     <li key={i} className={styles.listElement}>
-                      <Link href={`/home/tracks/${song.id}`} className={styles.songElement} onClick={()=>setTextArea("")}>
-                        <div className={styles.imgContainer}><Image src={song.artwork_url} alt="song cover" fill /></div>
-                        <div className={styles.songTitle}><h3>{song.title}</h3><span>{song.publisher_metadata?.artist}</span></div>
+                      <Link
+                        href={`/home/tracks/${song.id}`}
+                        className={styles.songElement}
+                        onClick={() => setTextArea("")}
+                      >
+                        <div className={styles.imgContainer}>
+                          <Image src={song.artwork_url} alt="song cover" fill />
+                        </div>
+                        <div className={styles.songTitle}>
+                          <h3>{song.title}</h3>
+                          <span>{song.publisher_metadata?.artist}</span>
+                        </div>
                       </Link>
                     </li>
                   );
