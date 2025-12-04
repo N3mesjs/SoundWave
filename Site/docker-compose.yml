@@ -6,6 +6,17 @@ services:
     ports:
       - "3050:3000"
     environment:
+      WATCHPACK_POLLING: "true"
+      DATABASE_HOST_NAME: database
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER_NAME: ${DATABASE_USER_NAME}
+      DATABASE_USER_PASSWORD: ${DATABASE_USER_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      SOUNDCLOUD_CLIENTID: ${SOUNDCLOUD_CLIENTID}
+      S3_ACCOUNTID: ${S3_ACCOUNTID}
+      S3_API: ${S3_API}
+      S3_ACCESSKEYID: ${S3_ACCESSKEYID}
+      S3_SECRECTKEY: ${S3_SECRECTKEY}
     command: npm run dev
     volumes:
       - .:/app
