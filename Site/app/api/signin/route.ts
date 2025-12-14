@@ -1,7 +1,6 @@
 import DBConnection from "../../lib/DBConnection";
 import { sign, verify } from "jsonwebtoken";
 import * as argon2 from "argon2";
-import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(request: Request) {
   let body = await request.json();
