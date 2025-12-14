@@ -1,8 +1,8 @@
 services:
   site:
     build:
-      context: .
-      target: dev
+      context: . # Specify the Docker file location
+      target: dev # Use the 'dev' stage from the Dockerfile
     ports:
       - "3050:3000"
     environment:
@@ -19,15 +19,17 @@ services:
       S3_SECRECTKEY: ${S3_SECRECTKEY}
     command: npm run dev
     volumes:
-      - .:/app
-      - /app/node_modules
+      - .:/app # Mount the entire project directory with a bind mount for development
+      - /app/node_modules # Ensure node_modules from the container is used and not overwritten by the host
       - /app/.next
-      - uploads:/app/public/uploads
+      - uploads:/app/public/uploads # Volume for uploaded files
     depends_on:
       - database
+    networks:
+      - SoundwaveNetwork # Use the custom network
 
   database:
-    image: mysql:oraclelinux9
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_DATABASE: "SoundWaveDB"
@@ -35,6 +37,8 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - SoundwaveNetwork
   
   # minio:
   #   image: quay.io/minio/aistor/minio
@@ -45,7 +49,9 @@ services:
   #   volumes:
   #   - minio_data:/mnt/minio
 
-
+networks:
+  SoundwaveNetwork:
+    driver: bridge
 
 volumes:
   db_data:

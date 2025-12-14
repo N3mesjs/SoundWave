@@ -15,6 +15,7 @@ export async function POST(request: Request) {
     const [rows, fields] = await conn.execute(findUsername, [username]);
     const defaultAvatar = '/default/defaultAvatar'
 
+    // Check if username already exists
     if((rows as any[]).length > 0){
       return Response.json(
         {message: "Username already exists!"}, 
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
         }
       }
       );
+    // If username is available, create new user, hash password, assign uuid and create JWT token
     } else {
       const hashedPassword = await argon2.hash(password);
       const newUserId = uuidv4();

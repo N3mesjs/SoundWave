@@ -11,6 +11,7 @@ export async function POST(request: Request) {
 
   const [rows, fields] = await conn.execute(query, [username]);
 
+  // Check if user exists
   if ((rows as any[]).length > 0) {
     if (await argon2.verify(rows[0].password, password)) {
       const cookieAge = (3600 * 24)*30; 
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
           status: 200,
           headers: {
             "Content-Type": "application/json",
-            'Set-Cookie': `session-token=${token}; HttpOnly; Path=/; Max-Age=${cookieAge}; SameSite=Strict`
+            'Set-Cookie': `session-token=${token}; HttpOnly; Path=/; Max-Age=${cookieAge}; SameSite=Strict` // set cookie header
           },
         }
       );
