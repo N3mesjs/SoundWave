@@ -2,6 +2,19 @@ import DBConnection from "../../lib/DBConnection";
 import { sign, verify } from "jsonwebtoken";
 import * as argon2 from "argon2";
 
+/**
+ * Gestore della rotta API POST per l'autenticazione (Login) dell'utente.
+ * * Questa rotta gestisce il flusso di autenticazione:
+ * 1. Connessione al DB.
+ * 2. Ricerca dell'utente tramite username.
+ * 3. Verifica della password tramite Argon2.
+ * 4. Generazione di un JWT contenente i dati essenziali dell'utente.
+ * 5. Impostazione del JWT in un cookie HttpOnly per la gestione della sessione.
+ *
+ * @param {Request} request L'oggetto Request contenente username e password nel body JSON.
+ * @returns {Response} Una risposta JSON con lo stato del login (successo o fallimento).
+ */
+
 export async function POST(request: Request) {
   let body = await request.json();
   const { username, password } = body;

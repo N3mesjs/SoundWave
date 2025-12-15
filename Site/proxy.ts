@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["http://localhost:3050", "http://localhost"];
 
 const corsOptions = {
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -17,8 +17,8 @@ export function proxy(request: NextRequest) {
 
   if (isPreflight) {
     const preflightHeaders = {
-      ...(isAllowedOrigin && { "Access-Control-Allow-Origin": origin }),
-      ...corsOptions,
+      ...(isAllowedOrigin && { "Access-Control-Allow-Origin": origin }), // Set the origin if it's allowed, https://www.reddit.com/r/javascript/comments/xijwcg/conditionally_spreading_objects_in_javascript/
+      ...corsOptions, // Spread the CORS options, so we dont create a new object each time inside the response(the structure would be preflight headers: { corsOptions: { ... } } we dont want that)
     };
     return NextResponse.json({}, { headers: preflightHeaders });
   }

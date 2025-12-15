@@ -28,6 +28,9 @@ export default function SearchBar() {
         const data = await response.json();
         setResults(data.collection);
         //console.log(results)
+      } else {
+        const data = await response.json();
+        console.error(data.message);
       }
     };
 
@@ -66,7 +69,7 @@ export default function SearchBar() {
         >
           <ul className={styles.songsList}>
             {results.length !== 0
-              ? results.map((song: any, i: number) => {
+              ? (results.slice(0,4)).map((song: any, i: number) => {
                   return (
                     <li key={i} className={styles.listElement}>
                       <Link

@@ -3,6 +3,19 @@ import { sign, verify } from "jsonwebtoken";
 import * as argon2 from "argon2";
 import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * Gestore della rotta API POST per la registrazione (Signup) di un nuovo utente.
+ * * Il flusso gestisce:
+ * 1. Estrazione dei dati (username, email, password) dal body.
+ * 2. Controllo della disponibilità dello username nel DB.
+ * 3. Hashing sicuro della password con Argon2.
+ * 4. Generazione di un UUID unico per il nuovo utente.
+ * 5. Salvataggio nel DB e creazione immediata della sessione utente (JWT via cookie).
+ *
+ * @param {Request} request L'oggetto Request contenente i dati di registrazione nel body JSON.
+ * @returns {Response} Una risposta JSON con lo stato della creazione (successo o fallimento).
+ */
+
 export async function POST(request: Request) {
   try{
     let body = await request.json();

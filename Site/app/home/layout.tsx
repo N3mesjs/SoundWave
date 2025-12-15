@@ -1,4 +1,5 @@
 import "../global.css";
+import styles from './home.module.css'
 
 import Header from "../components/header/Header";
 import { logout } from '../auth/actions'
@@ -29,11 +30,9 @@ export default async function RootLayout({
     }
 
   return (
-    <html lang="en">
-      <body>
-        <Header userData={user}/>
-        <main>{children}</main>
-      </body>
-    </html>
+    <>
+      <Header userData={user}/>
+      <main className={styles.container}>{children}</main>
+    </>
   );
 }

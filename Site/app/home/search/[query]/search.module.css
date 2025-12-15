@@ -1,15 +1,28 @@
+.title {
+    padding: 2rem;
+}
+
+/*
+ * auto-fit checks automatically if a column can fit or it creates a new row
+ * instead minmax is a functions that tells the grid to fit elements with a
+ * width between 350px and 1fr, in this way if we have some white space that is
+ * less than 300px so it cant create a new column, it will fit the existing
+ * columns to fit all the page
+ */
+
 .songsList {
     list-style-type: none;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     padding: 1.5rem;
+    overflow: auto;
 }
 
 .listElement {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     text-decoration: none;
     color: white;
     padding: 1.5rem;
@@ -37,8 +50,9 @@
 
 .songElement {
     display: flex;
-    gap: 0.75rem;
-    justify-content: start;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
     align-items: center;
 }
 

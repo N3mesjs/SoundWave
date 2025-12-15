@@ -32,6 +32,7 @@
     background-color: var(--secondary-color);
 
     overflow-y: auto;
+    z-index: 50;
 }
 .resultsContainer.show {
     display: block !important;
