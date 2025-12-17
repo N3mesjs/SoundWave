@@ -2,6 +2,32 @@
 module.exports = {
   output: "standalone",
   images: {
-    remotePatterns: [new URL('https://i1.sndcdn.com/**')],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'i9.ytimg.com',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'yt3.ggpht.com',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'yt3.googleusercontent.com',
+        pathname: '/**'
+      },
+    ],
   }
 };

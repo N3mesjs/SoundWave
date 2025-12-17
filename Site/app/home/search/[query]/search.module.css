@@ -33,7 +33,7 @@
     font-size: 1.5rem;
 }
 .listElement:hover{
-    background-color: var(--accent-color);
+    background-color: var(--mark-color);
     cursor: pointer;
 }
 

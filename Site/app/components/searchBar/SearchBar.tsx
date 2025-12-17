@@ -8,10 +8,11 @@ import styles from "./SearchBar.module.css";
 
 import React, { useEffect, useState, ChangeEvent } from "react";
 import useDebounce from "../../hooks/useDebounce";
+import { YouTubeResponse } from "@/types/youtubeAPI";
 
 export default function SearchBar() {
   const [textArea, setTextArea] = useState<string>("");
-  const [results, setResults] = useState<[]>([]);
+  const [results, setResults] = useState<YouTubeResponse>({});
 
   const debounceValue = useDebounce(textArea, 1000);
 
@@ -26,7 +27,8 @@ export default function SearchBar() {
 
       if (response.ok) {
         const data = await response.json();
-        setResults(data.collection);
+        setResults(data);
+        console.log(results);
         //console.log(results)
       } else {
         const data = await response.json();
@@ -37,13 +39,13 @@ export default function SearchBar() {
     if (debounceValue !== "") {
       fetchResults();
     } else {
-      setResults([]);
+      setResults({});
     }
   }, [debounceValue]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (results.length !== 0) {
+    if (results.pageInfo?.resultsPerPage !== 0) {
       setTextArea("");
       redirect(`/home/search/${debounceValue}`);
     }
@@ -64,25 +66,27 @@ export default function SearchBar() {
         </form>
         <div
           className={`${styles.resultsContainer} ${
-            results.length !== 0 && textArea !== "" ? styles.show : ""
+            results.pageInfo?.resultsPerPage !== 0 && textArea !== ""
+              ? styles.show
+              : ""
           }`}
         >
           <ul className={styles.songsList}>
-            {results.length !== 0
-              ? (results.slice(0,4)).map((song: any, i: number) => {
+            {results.pageInfo?.resultsPerPage !== 0
+              ? results.items?.slice(0, 4).map((song: any, i: number) => {
                   return (
                     <li key={i} className={styles.listElement}>
                       <Link
-                        href={`/home/tracks/${song.id}`}
+                        href={`/home/tracks/${song.id.videoId}`}
                         className={styles.songElement}
                         onClick={() => setTextArea("")}
                       >
                         <div className={styles.imgContainer}>
-                          <Image src={song.artwork_url} alt="song cover" fill />
+                          <Image src={song.snippet?.thumbnails?.default?.url} alt="song cover" fill />
                         </div>
                         <div className={styles.songTitle}>
                           <h3>{song.title}</h3>
-                          <span>{song.publisher_metadata?.artist}</span>
+                          <span>{song.snippet?.channelTitle}</span>
                         </div>
                       </Link>
                     </li>

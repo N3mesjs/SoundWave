@@ -14,8 +14,10 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const query = searchParams.get('query');
   
-  const clientID = process.env.SOUNDCLOUD_CLIENTID
-  const soundcloudAPIUrl = `https://api-v2.soundcloud.com/search/tracks?q=${query}&client_id=${clientID}&access=playable&limit=20`
+  //const clientID = process.env.SOUNDCLOUD_CLIENTID
+  //const soundcloudAPIUrl = `https://api-v2.soundcloud.com/search/tracks?q=${query}&client_id=${clientID}&access=playable&limit=20`
+  const clientID = process.env.YOUTUBE_API_KEY
+  const youtubeAPIURL = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${query}&key=${clientID}`
   console.log(query);
   if (!query) {
     return Response.json(
@@ -38,7 +40,7 @@ export async function GET(request: NextRequest) {
   );
 }
 
-  const response = await fetch(soundcloudAPIUrl);
+  const response = await fetch(youtubeAPIURL);
 
   if(response.ok){
     const data = await response.json();
