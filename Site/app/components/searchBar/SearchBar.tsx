@@ -10,6 +10,16 @@ import React, { useEffect, useState, ChangeEvent } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import { YouTubeResponse } from "@/types/youtubeAPI";
 
+/**
+ * Barra di Ricerca (Client Component).
+ *
+ * Questo componente consente agli utenti di cercare tracce utilizzando
+ * l'API interna di ricerca. Implementa una funzionalità di debounce
+ * per ottimizzare le richieste di rete e visualizza i risultati
+ * della ricerca in un menu a discesa.
+ * @returns {JSX.Element}
+ */
+
 export default function SearchBar() {
   const [textArea, setTextArea] = useState<string>("");
   const [results, setResults] = useState<YouTubeResponse>({});
@@ -72,24 +82,28 @@ export default function SearchBar() {
           }`}
         >
           <ul className={styles.songsList}>
-            {results.pageInfo?.resultsPerPage !== 0
+            {results.items?.length !== 0
               ? results.items?.slice(0, 4).map((song: any, i: number) => {
                   return (
-                    <li key={i} className={styles.listElement}>
-                      <Link
-                        href={`/home/tracks/${song.id.videoId}`}
-                        className={styles.songElement}
-                        onClick={() => setTextArea("")}
-                      >
+                    <Link
+                      href={`/home/tracks/${song.id.videoId}`}
+                      className={styles.songElement}
+                      onClick={() => setTextArea("")}
+                    >
+                      <li key={i} className={styles.listElement}>
                         <div className={styles.imgContainer}>
-                          <Image src={song.snippet?.thumbnails?.default?.url} alt="song cover" fill />
+                          <Image
+                            src={song.snippet?.thumbnails?.default?.url}
+                            alt="song cover"
+                            fill
+                          />
                         </div>
                         <div className={styles.songTitle}>
                           <h3>{song.title}</h3>
                           <span>{song.snippet?.channelTitle}</span>
                         </div>
-                      </Link>
-                    </li>
+                      </li>
+                    </Link>
                   );
                 })
               : " "}

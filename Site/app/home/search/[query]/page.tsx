@@ -5,6 +5,22 @@ import Image from "next/image";
 
 import { YouTubeResponse } from "@/types/youtubeAPI";
 
+/**
+ * Pagina di Ricerca (Server Component).
+ *
+ * Questo componente asincrono recupera i risultati della ricerca da
+ * l'API interna di ricerca e visualizza una lista di tracce corrispondenti
+ * alla query di ricerca fornita nei parametri della rotta.
+ *
+ * Funzionalità chiave:
+ * 1. Estrae la query di ricerca dai parametri della rotta (gestendo la Promise asincrona di Next.js).
+ * 2. Effettua una richiesta all'API interna per ottenere i risultati della ricerca.
+ * 3. Visualizza i risultati in una lista con link ai dettagli di ciascuna traccia.
+ * @param {Promise<{ query: string }>} params Una Promise che si risolve con i parametri
+ * dinamici della rotta (query). Il valore risolto è un oggetto.
+ * @returns {JSX.Element}
+ */
+
 export default async function SearchPage({
   params,
 }: {

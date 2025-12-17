@@ -8,7 +8,7 @@ import { useState, useRef, useEffect, MouseEvent } from "react";
 import { logout } from "../../auth/actions";
 import SearchBar from "../searchBar/SearchBar";
 
-type HeaderProps = {
+interface HeaderProps {
   userData: {
     id: string;
     username: string;

@@ -6,6 +6,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 1000;
 }
 
 .searchArea input {
@@ -32,7 +33,7 @@
     background-color: var(--secondary-color);
 
     overflow-y: auto;
-    z-index: 50;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
 }
 .resultsContainer.show {
     display: block !important;
@@ -46,7 +47,7 @@
     padding: 1.5rem;
 }
 
-.listElement {
+.songElement {
     display: flex;
     align-items: center;
     justify-content: start;
@@ -59,8 +60,8 @@
     gap: 0.5rem;
     font-size: 1.5rem;
 }
-.listElement:hover{
-    background-color: var(--accent-color);
+.songElement:hover{
+    background-color: var(--mark-color);
     cursor: pointer;
 }
 
@@ -75,7 +76,7 @@
     object-fit: contain;
 }
 
-.songElement {
+.listElement {
     display: flex;
     gap: 0.75rem;
     justify-content: start;
