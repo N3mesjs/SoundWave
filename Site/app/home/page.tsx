@@ -2,7 +2,8 @@ export default async function Page(){
 
     return(
         <>
-            <audio src={'http://localhost:3000/api/song-stream'} controls />
+            <h1>Home Page</h1>
+            <audio src ="/api/song-stream" controls />
         </>
     )
 }
