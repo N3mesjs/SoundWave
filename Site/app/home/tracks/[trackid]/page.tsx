@@ -31,12 +31,10 @@ export default async function TrackPage({
   params: Promise<{ trackid: string }>;
 }) {
   const { trackid } = await params;
-  const clientID = process.env.SOUNDCLOUD_CLIENTID;
-  const url = `https://api-v2.soundcloud.com/tracks/${trackid}?client_id=${clientID}`;
   let track;
   let trackAudioURL = "";
 
-  const response = await fetch(url, {
+  const response = await fetch("/api/song-stream", {
     headers: {
       "Content-Type": "application/json",
     },
