@@ -8,9 +8,7 @@
     "nodemailer": "^7.0.10",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "uuid": "^13.0.0",
-    "youtubei.js": "^16.0.1",
-    "ytdl-core": "^4.11.5"
+    "uuid": "^13.0.0"
   },
   "scripts": {
     "dev": "next dev",
