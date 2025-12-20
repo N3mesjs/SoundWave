@@ -1,9 +1,8 @@
 import { type NextRequest } from "next/server";
-import pgk from "yt-dlp-wrap";
+import YTDlpWrap from "yt-dlp-wrap";
 import { Readable } from "stream";
 import { join } from 'path';
 
-const YTDlpWrap = (pgk as any).default;
 const binaryPath = join('/', 'usr', 'bin', 'yt-dlp');
 const ytdlp = new YTDlpWrap(binaryPath);
 
@@ -12,7 +11,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get("query");
     const range = request.headers.get("range");
-    const url = `http://www.youtube.com/watch?v=ZjBLbXUuyWg`;
+    const url = `http://www.youtube.com/watch?v=${query}`;
     
     let readableStream = ytdlp.execStream([
         url,

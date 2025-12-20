@@ -31,45 +31,19 @@ export default async function TrackPage({
   params: Promise<{ trackid: string }>;
 }) {
   const { trackid } = await params;
-  let track;
-  let trackAudioURL = "";
-
-  const response = await fetch("/api/song-stream", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (response.ok) {
-    track = await response.json();
-    console.log(track);
-
-    let transcodingURL: string;
-
-    // Extract the progressive stream URL
-    track.media.transcodings.forEach((transcoding: any) => {
-      if (transcoding.format.protocol === "progressive") {
-        transcodingURL = `${transcoding.url}?client_id=${clientID}`;
-      }
-    });
-
-    // Fetch the actual audio URL
-    const transcodingResponse = await fetch(transcodingURL);
-    trackAudioURL = (await transcodingResponse.json()).url;
-  }
 
   return (
     <div className={styles.gridContainer}>
       <div className={styles.gridElement}>
-        <img src={track.artwork_url} alt={track.title} />
-        <h1>{track.title}</h1>
+        {/* <img src={track.artwork_url} alt={track.title} />
+        <h1>{track.title}</h1> */}
       </div>
       <div className={styles.gridElement}>
-        <p>{track.description}</p>
-        <audio src={trackAudioURL} controls />
-        <p>Duration: {formatDuration(track.duration)}</p>
+        {/* <p>{track.description}</p> */}
+        <audio src={`/api/song-stream?query=${trackid}`} controls />
+        {/* <p>Duration: {formatDuration(track.duration)}</p>
         <p>Plays: {track.playback_count}</p>
-        <p>Likes: {track.likes_count}</p>
+        <p>Likes: {track.likes_count}</p> */}
       </div>
     </div>
   );
