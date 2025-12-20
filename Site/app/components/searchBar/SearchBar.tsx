@@ -57,7 +57,7 @@ export default function SearchBar() {
     e.preventDefault();
     if (results.pageInfo?.resultsPerPage !== 0) {
       setTextArea("");
-      redirect(`/home/search/${debounceValue}`);
+      redirect(`/home/search/${textArea}`);
     }
   };
 
@@ -89,6 +89,7 @@ export default function SearchBar() {
                       href={`/home/tracks/${song.id.videoId}`}
                       className={styles.songElement}
                       onClick={() => setTextArea("")}
+                      key={i}
                     >
                       <li key={i} className={styles.listElement}>
                         <div className={styles.imgContainer}>

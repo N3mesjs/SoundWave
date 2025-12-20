@@ -1,13 +1,8 @@
 "use server";
 
+import { resumePluginState } from "next/dist/build/build-context";
 import styles from "./tracks.module.css";
-
-function formatDuration(durationMs: number): string {
-  const totalSeconds = Math.floor(durationMs / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes + ' minutes ' +seconds + ' seconds'}`;
-}
+import { YouTubeResponse } from "@/types/youtubeAPI";
 
 /**
  * Pagina dei Dettagli Traccia (Server Component).
@@ -31,12 +26,28 @@ export default async function TrackPage({
   params: Promise<{ trackid: string }>;
 }) {
   const { trackid } = await params;
+  let result: YouTubeResponse;
+
+    const response = await fetch(`/api/search?query=${trackid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      result = await response.json();
+    } else {
+      const error = await response.json();
+      console.error(error.message);
+    }
+  };
 
   return (
     <div className={styles.gridContainer}>
       <div className={styles.gridElement}>
-        {/* <img src={track.artwork_url} alt={track.title} />
-        <h1>{track.title}</h1> */}
+        <img src={result.} alt={track.title} />
+        <h1>{track.title}</h1>
       </div>
       <div className={styles.gridElement}>
         {/* <p>{track.description}</p> */}
