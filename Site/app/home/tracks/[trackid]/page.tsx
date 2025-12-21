@@ -1,6 +1,5 @@
 "use server";
 
-import { resumePluginState } from "next/dist/build/build-context";
 import styles from "./tracks.module.css";
 import { YouTubeResponse } from "@/types/youtubeAPI";
 
@@ -27,8 +26,12 @@ export default async function TrackPage({
 }) {
   const { trackid } = await params;
   let result: YouTubeResponse;
+  let thumbnail: string = "";
+  let title: string = "";
+  let description: string = "";
+  let trackDuration: number = 0;
 
-    const response = await fetch(`/api/search?query=${trackid}`, {
+    const response = await fetch(`http://localhost:3000/api/search?id=${trackid}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,24 +40,23 @@ export default async function TrackPage({
 
     if (response.ok) {
       result = await response.json();
+      thumbnail = result.items ? result.items[0].snippet?.thumbnails?.default?.url || "/defaultSongThumbnail.png" : "/defaultSongThumbnail.png";
+      title = result.items ? result.items[0].snippet?.title || "Unknown Title" : "Unknown Title";
+      description = result.items ? result.items[0].snippet?.description || "No Description" : "No Description";
     } else {
       const error = await response.json();
       console.error(error.message);
     }
-  };
 
   return (
     <div className={styles.gridContainer}>
       <div className={styles.gridElement}>
-        <img src={result.} alt={track.title} />
-        <h1>{track.title}</h1>
+        <img src={result.items[0].snippet?.thumbnails?.default?.url} alt={result.items[0].snippet?.title} />
+        <h1>{result.items[0].snippet?.title}</h1>
       </div>
       <div className={styles.gridElement}>
-        {/* <p>{track.description}</p> */}
-        <audio src={`/api/song-stream?query=${trackid}`} controls />
-        {/* <p>Duration: {formatDuration(track.duration)}</p>
-        <p>Plays: {track.playback_count}</p>
-        <p>Likes: {track.likes_count}</p> */}
+        <audio src={`/api/song-stream?id=${trackid}`} controls />
+        <p>{description}</p>
       </div>
     </div>
   );

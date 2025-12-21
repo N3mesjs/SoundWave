@@ -1,27 +1,36 @@
 import { type NextRequest } from "next/server";
 import YTDlpWrap from "yt-dlp-wrap";
 import { Readable } from "stream";
-import { join } from 'path';
+import { join } from "path";
 
-const binaryPath = join('/', 'usr', 'bin', 'yt-dlp');
+const binaryPath = join("/", "usr", "bin", "yt-dlp");
 const ytdlp = new YTDlpWrap(binaryPath);
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const query = searchParams.get("query");
+    const id = searchParams.get("id");
     const range = request.headers.get("range");
-    const url = `http://www.youtube.com/watch?v=${query}`;
+    const url = `http://www.youtube.com/watch?v=${id}`;
+
+    const videoInfo = await ytdlp.getVideoInfo(url);
+    const formatsInfo = videoInfo.formats
+      .filter(
+        (f) => f.ext === "m4a" && f.vcodec === "none" && f.acodec !== "none"
+      )
+      .sort((a, b) => (a.abr || 0) - (b.abr || 0))
+      .pop();
+
+    const fileSize = formatsInfo.filesize_approx;
     
-    let readableStream = ytdlp.execStream([
-        url,
-        '-f', 
-        'bestaudio[ext=m4a]',
-        '--js-runtimes', 'node',
+    const readableStream = ytdlp.execStream([
+      url,
+      "-f", "bestaudio[ext=m4a]",
+      "--js-runtimes", "node",
     ]);
 
-    readableStream.on('error', (error) => {
-      console.error('Stream error:', error);
+    readableStream.on("error", (error) => {
+      console.error("Stream error:", error);
       return Response.json(
         { message: "Error streaming audio" },
         {
@@ -32,14 +41,9 @@ export async function GET(request: NextRequest) {
         }
       );
     });
-
-    readableStream.on('end', () => {
-      console.log('Stream ended');
+    readableStream.on("end", () => {
+      console.log("Stream ended");
     });
-
-
-
-    // readableStream.pipe(createWriteStream('test.m4a'));
 
     const stream = Readable.toWeb(readableStream);
 
@@ -48,9 +52,11 @@ export async function GET(request: NextRequest) {
       headers: {
         "Content-Type": "audio/m4a",
         "Transfer-Encoding": "chunked",
-      }
+        // "Content-Length": fileSize.toString(),
+        // "Accept-Ranges": "none", // <--- Questo impedisce al browser di "impallarsi"
+        // "Cache-Control": "no-cache",
+      },
     });
-
   } catch (error) {
     return Response.json(
       { message: error.message || "Internal Server Error" },

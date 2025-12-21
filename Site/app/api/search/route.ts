@@ -1,4 +1,4 @@
-import { type NextRequest } from 'next/server'
+import { type NextRequest } from "next/server";
 
 /**
  * Gestore della rotta API GET per la ricerca di tracce su SoundCloud.
@@ -12,16 +12,16 @@ import { type NextRequest } from 'next/server'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const query = searchParams.get('query');
-  
-  //const clientID = process.env.SOUNDCLOUD_CLIENTID
-  //const soundcloudAPIUrl = `https://api-v2.soundcloud.com/search/tracks?q=${query}&client_id=${clientID}&access=playable&limit=20`
-  const clientID = process.env.YOUTUBE_API_KEY
-  const youtubeAPIURL = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${query}&key=${clientID}`
-  console.log(query);
-  if (!query) {
+  const query = searchParams.get("query");
+  const videoID = searchParams.get("id");
+
+  const clientID = process.env.YOUTUBE_API_KEY;
+  const youtubeAPIURL = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${query}&key=${clientID}`;
+  const youtubeAPIURL_videoID = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoID}&key=${clientID}`;
+
+  if (!query && !videoID) {
     return Response.json(
-      { message: "Missing query!" },
+      { message: "Missing query/videoID!" },
       {
         status: 400,
       }
@@ -29,39 +29,66 @@ export async function GET(request: NextRequest) {
   }
 
   if (!clientID) {
-  return Response.json(
-    { message: "Missing SoundCloud client ID" },
-    { 
-      status: 500,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-  );
-}
-
-  const response = await fetch(youtubeAPIURL);
-
-  if(response.ok){
-    const data = await response.json();
-    return Response.json(data, 
+    return Response.json(
+      { message: "Missing client ID" },
       {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
+
+  /**
+   * Logica per gestire le richieste API in base ai parametri forniti.
+   * Se è presente 'query', effettua una ricerca.
+   * Se è presente 'videoID', recupera i dettagli del video specifico.
+   */
+
+  if (query) {
+    const response = await fetch(youtubeAPIURL);
+
+    if (response.ok) {
+      const data = await response.json();
+      return Response.json(data, {
         status: 200,
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+        },
+      });
+    } else {
+      return Response.json(
+        { message: "The API request didn't succede", type: "search with query" },
+        {
+          status: 502,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      }
-    )
-  } else {
-    return Response.json(
-      { message:  "The API request didn't succede"},
-      {
-        status: 502,
+      );
+    }
+  } else if (videoID) {
+    const response = await fetch(youtubeAPIURL_videoID);
+
+    if (response.ok) {
+      const data = await response.json();
+      return Response.json(data, {
+        status: 200,
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+        },
+      });
+    } else {
+      return Response.json(
+        { message: "The API request didn't succede", type: "search with videoID" },
+        {
+          status: 502,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      }
-    )
+      );
+    }
   }
 }
-
