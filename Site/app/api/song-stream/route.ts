@@ -8,53 +8,70 @@ const ytdlp = new YTDlpWrap(binaryPath);
 
 export async function GET(request: NextRequest) {
   try {
-    const id = request.nextUrl.searchParams.get("id");
+    const videoID = request.nextUrl.searchParams.get("id");
     const range = request.headers.get("range"); // Es: "bytes=1000-"
-    const url = `https://www.youtube.com/watch?v=${id}`;
+    const url = `https://www.youtube.com/watch?v=${videoID}`;
 
     const videoInfo = await ytdlp.getVideoInfo(url);
     const format = videoInfo.formats
       .filter((f) => f.ext === "m4a" && f.vcodec === "none")
-      .sort((a, b) => (a.abr || 0) - (b.abr || 0))
+      .sort((a, b) => a.abr - b.abr)
       .pop();
+    
+    const audioURL = format.url
 
-    const fileSize = format.filesize || format.filesize_approx;
-    const duration = videoInfo.duration; // Durata in secondi
+    /**
+     * N.B. Non si utilizza il metodo .getReader dal body del fetch
+     * dato che:
+     * 1) riceviamo gia una readable stream! quindi non ha senso lavorare
+     *    nei singoli chunk!
+     * 2) non dobbiamo manipolare i singoli chunk e quindi accedere alla proprieta
+     *    .read e gestire i vari chunk.
+     * 
+     * Il tutto e possibile solo perche youtube fornisce url con audio completo
+     * se no non era possibile
+     */
+    const stream = await fetch(audioURL, {
+      headers: {
+        'Content-Type': 'audio/m4a',
+        'Range': `${range}`
+      }
+    })
 
-    // --- LOGICA DI SEEKING (ORTODOSSA) ---
-    let startByte = 0;
-    if (range) {
-      startByte = Number(range.replace(/\D/g, ""));
-    }
+    return new Response(stream.body, {
+      status: 206,
+      headers: {
+        "Content-Type": 'audio/m4a',
+        "Accept-Range": 'bytes',
+        "Content-Range": stream.headers.get('Content-Range') || "",
+        "Content-Length": stream.headers.get('Content-Lenght') || ""
+      }
+    })
 
-    // Convertiamo i byte richiesti in secondi per yt-dlp
-    const startSeconds = (startByte / fileSize) * duration;
+    /**
+     * The code below is for streaming with the yt-dlp stream method
+     */
 
-    const readableStream = ytdlp.execStream([
-      url,
-      "-f", "bestaudio[ext=m4a]",
-      "--download-sections", `*${startSeconds}-inf`, // Inizia dal secondo calcolato
-      "--force-keyframes-at-cuts",
-      "--js-runtimes", "node",
-    ]);
+    //const duration = videoInfo.duration;
+    // const readableStream = ytdlp.execStream([
+    //   url,
+    //   "-f", "bestaudio[ext=m4a]",
+    //   "--download-sections", `*${startSeconds}-inf`,
+    //   "--force-keyframes-at-cuts",
+    //   "--js-runtimes", "node",
+    // ]);
 
-    const stream = Readable.toWeb(readableStream);
+    //const stream = Readable.toWeb(readableStream);
 
-    // Risposta 206 (Partial Content) se c'è un range, altrimenti 200
-    const status = range ? 206 : 200;
-
-    const headers: any = {
-      "Content-Type": "audio/m4a",
-      "Accept-Ranges": "bytes",
-      "Content-Length": (fileSize - startByte).toString(),
-    };
-
-    if (range) {
-      headers["Content-Range"] = `bytes ${startByte}-${fileSize - 1}/${fileSize}`;
-    }
-
-    return new Response(stream as ReadableStream, { status, headers });
-
+    // return new Response(stream as ReadableStream, {
+    //   status: 206,
+    //   headers: {
+    //     "Content-Type": "audio/m4a",
+    //     "Accept-Ranges": "bytes",
+    //     "Content-Length": `${fileSize}`,
+    //     "Content-Range": `bytes ${startByte}-${fileSize}/${fileSize}`,
+    //   },
+    // });
   } catch (error: any) {
     return Response.json({ message: error.message }, { status: 500 });
   }

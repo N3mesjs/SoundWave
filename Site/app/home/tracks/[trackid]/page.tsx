@@ -31,6 +31,8 @@ export default async function TrackPage({
   let description: string = "";
   let trackDuration: number = 0;
 
+  console.log(trackid)
+
     const response = await fetch(`http://localhost:3000/api/search?id=${trackid}`, {
       method: "GET",
       headers: {
@@ -40,7 +42,7 @@ export default async function TrackPage({
 
     if (response.ok) {
       result = await response.json();
-      thumbnail = result.items ? result.items[0].snippet?.thumbnails?.default?.url || "/defaultSongThumbnail.png" : "/defaultSongThumbnail.png";
+      thumbnail = result.items ? result.items[0].snippet?.thumbnails?.high?.url || "/defaultSongThumbnail.png" : "/defaultSongThumbnail.png";
       title = result.items ? result.items[0].snippet?.title || "Unknown Title" : "Unknown Title";
       description = result.items ? result.items[0].snippet?.description || "No Description" : "No Description";
     } else {
@@ -51,8 +53,8 @@ export default async function TrackPage({
   return (
     <div className={styles.gridContainer}>
       <div className={styles.gridElement}>
-        <img src={result.items[0].snippet?.thumbnails?.default?.url} alt={result.items[0].snippet?.title} />
-        <h1>{result.items[0].snippet?.title}</h1>
+        <img src={thumbnail} alt={title} />
+        <h1>{title}</h1>
       </div>
       <div className={styles.gridElement}>
         <audio src={`/api/song-stream?id=${trackid}`} controls />
