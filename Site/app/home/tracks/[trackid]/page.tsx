@@ -31,7 +31,7 @@ export default async function TrackPage({
   let description: string = "";
   let trackDuration: number = 0;
 
-  console.log(trackid)
+  //console.log(trackid)
 
     const response = await fetch(`http://localhost:3000/api/search?id=${trackid}`, {
       method: "GET",

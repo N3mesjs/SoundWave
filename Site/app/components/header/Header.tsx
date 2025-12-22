@@ -1,5 +1,5 @@
 "use client";
-import styles from "./Header.module.css"
+import styles from "./Header.module.css";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -14,11 +14,13 @@ interface HeaderProps {
     username: string;
     avatar: string;
   };
-};
+}
 
 export default function Header({ userData }: HeaderProps) {
   const [userMenu, setUserMenu] = useState<boolean>(false);
+  const [showSettings, setShowSettings] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const settingsRef = useRef<HTMLDivElement>(null);
 
   const toogleuserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -43,42 +45,77 @@ export default function Header({ userData }: HeaderProps) {
     };
   }, [userMenu]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        settingsRef.current &&
+        !settingsRef.current.contains(event.target as Node)
+      )
+        setShowSettings(false);
+    };
+
+    if (showSettings) {
+      document.addEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showSettings]);
+
   return (
-    <div className={styles.header}>
-      <Link href="/home">
-        <div className={styles.logo}>
-          <div className={styles.imgLogoContainer}>
-            <Image src="/logo.png" alt="logo" fill />
+    <>
+      <div className={styles.header}>
+        <Link href="/home">
+          <div className={styles.logo}>
+            <div className={styles.imgLogoContainer}>
+              <Image src="/logo.png" alt="logo" fill />
+            </div>
+            <h1>SoundWave</h1>
           </div>
-          <h1>SoundWave</h1>
+        </Link>
+        <SearchBar />
+        <button className={styles.userArea} onClick={toogleuserMenu}>
+          <div className={styles.imgLogoContainer}>
+            <Image
+              className={styles.avatar}
+              src="/default/defaultAvatar.png"
+              alt="alt user avatar"
+              fill
+            />
+          </div>
+          <h2>{userData.username}</h2>
+        </button>
+        <div
+          ref={userMenuRef}
+          className={`${styles.userMenu} ${userMenu ? styles.show : ""}`}
+        >
+          <ul className={styles.userMenuList}>
+            <li>
+              <button
+                className={`${styles.listElement} ${styles.settingsButton}`}
+                id="settings"
+                onClick={()=> {setShowSettings(true); setUserMenu(false)}}
+              >
+                Settings
+              </button>
+            </li>
+            <li>
+              <button
+                className={`${styles.listElement} ${styles.logoutButton}`}
+                id="logout"
+                onClick={logout}
+              >
+                Log Out
+              </button>
+            </li>
+          </ul>
         </div>
-      </Link>
-      <SearchBar />
-      <button className={styles.userArea} onClick={toogleuserMenu}>
-        <div className={styles.imgLogoContainer}>
-          <Image
-            className={styles.avatar}
-            src="/default/defaultAvatar.png"
-            alt="alt user avatar"
-            fill
-          />
-        </div>
-        <h2>{userData.username}</h2>
-      </button>
-      <div ref={userMenuRef} className={`${styles.userMenu} ${userMenu ? styles.show : ""}`}>
-        <ul className={styles.userMenuList}>
-          <li>
-            <Link className={`${styles.listElement} ${styles.settingsButton}`} id="settings" href="/home/settings">
-              Settings
-            </Link>
-          </li>
-          <li>
-            <button className={`${styles.listElement} ${styles.logoutButton}`} id="logout" onClick={logout}>
-              Log Out
-            </button>
-          </li>
-        </ul>
       </div>
-    </div>
+
+      <div ref={settingsRef} className={`${styles.settingsContainer} ${showSettings ? styles.show : ""}`}>
+
+      </div>
+    </>
   );
 }

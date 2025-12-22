@@ -52,7 +52,7 @@ export default async function SearchPage({
         <hr />
         <ul className={styles.songsList}>
           {results.items && results.items.length >0 ? results.items.map((song: any, i: number) => {
-                console.log(song);
+                //console.log(song);
                 return (
                   <li key={i} className={styles.listElement}>
                     <Link

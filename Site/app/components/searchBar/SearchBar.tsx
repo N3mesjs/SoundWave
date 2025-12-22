@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 import styles from "./SearchBar.module.css";
 
-import React, { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState, ChangeEvent, useRef } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import { YouTubeResponse } from "@/types/youtubeAPI";
 
@@ -23,7 +23,13 @@ import { YouTubeResponse } from "@/types/youtubeAPI";
 export default function SearchBar() {
   const [textArea, setTextArea] = useState<string>("");
   const [results, setResults] = useState<YouTubeResponse>({});
+  const [showResContainer, setShowResContainer] = useState<boolean>(false);
+  const searchResultRef = useRef<HTMLDivElement | null>(null);
 
+  /**
+   * Nel seguente useEffect viene fatto un fetch alla API endpoint
+   * e viene fatto con una debounceValue tramite la chiamata della sua funzione
+   */
   const debounceValue = useDebounce(textArea, 1000);
 
   useEffect(() => {
@@ -38,8 +44,8 @@ export default function SearchBar() {
       if (response.ok) {
         const data = await response.json();
         setResults(data);
-        console.log(results);
-        //console.log(results)
+        setShowResContainer(true)
+        //console.log(results);
       } else {
         const data = await response.json();
         console.error(data.message);
@@ -50,8 +56,26 @@ export default function SearchBar() {
       fetchResults();
     } else {
       setResults({});
+      setShowResContainer(false)
     }
   }, [debounceValue]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: Event) => {
+      if(searchResultRef.current && !searchResultRef.current.contains(e.target as Node)){
+        setShowResContainer(false)
+      }
+    }
+    
+    if(showResContainer){
+      document.addEventListener('click', handleClickOutside);
+    }
+  
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    }
+    
+  }, [showResContainer])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,9 +98,9 @@ export default function SearchBar() {
           />
           <button type="submit" />
         </form>
-        <div
+        <div ref={searchResultRef}
           className={`${styles.resultsContainer} ${
-            results.pageInfo?.resultsPerPage !== 0 && textArea !== ""
+            results.pageInfo?.resultsPerPage !== 0 && textArea !== "" && showResContainer
               ? styles.show
               : ""
           }`}

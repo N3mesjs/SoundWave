@@ -130,3 +130,23 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+
+.settingsBackdrop
+
+.settingsContainer {
+    position: fixed;
+    display: none;
+    width: 90%;
+    height: 90%;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background-color: var(--highlight-color);
+}
+
+.settingsContainer.show {
+    display: block !important;
+}
