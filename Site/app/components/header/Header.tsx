@@ -113,8 +113,10 @@ export default function Header({ userData }: HeaderProps) {
         </div>
       </div>
 
-      <div ref={settingsRef} className={`${styles.settingsContainer} ${showSettings ? styles.show : ""}`}>
-
+      <div className={`${styles.settingsBackdrop} ${showSettings ? styles.show : ""}`}>
+        <div ref={settingsRef} className={styles.settingsContainer}>
+          AAAA
+        </div>
       </div>
     </>
   );

@@ -131,10 +131,16 @@
     background-position: center;
 }
 
-.settingsBackdrop
+.settingsBackdrop {
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.621),
+}
 
 .settingsContainer {
-    position: fixed;
+    position: absolute;
     display: none;
     width: 90%;
     height: 90%;
@@ -147,6 +153,6 @@
     background-color: var(--highlight-color);
 }
 
-.settingsContainer.show {
-    display: block !important;
+.settingsBackdrop.show {
+    display: flex !important;
 }
