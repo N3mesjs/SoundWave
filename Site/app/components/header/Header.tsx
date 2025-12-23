@@ -95,7 +95,10 @@ export default function Header({ userData }: HeaderProps) {
               <button
                 className={`${styles.listElement} ${styles.settingsButton}`}
                 id="settings"
-                onClick={()=> {setShowSettings(true); setUserMenu(false)}}
+                onClick={() => {
+                  setShowSettings(true);
+                  setUserMenu(false);
+                }}
               >
                 Settings
               </button>
@@ -113,9 +116,24 @@ export default function Header({ userData }: HeaderProps) {
         </div>
       </div>
 
-      <div className={`${styles.settingsBackdrop} ${showSettings ? styles.show : ""}`}>
+      <div
+        className={`${styles.settingsBackdrop} ${
+          showSettings ? styles.show : ""
+        }`}
+      >
         <div ref={settingsRef} className={styles.settingsContainer}>
-          AAAA
+          <div className={styles.settingsCategories}>
+            <button>
+              <div className={styles.imgLogoContainer}>
+                <Image className={styles.avatar} src={userData.avatar} fill alt="user profile picture" />
+              </div>
+              <div>
+                <h3>{userData.username}</h3>
+                <h4>Edit Profile</h4>
+              </div>
+            </button>
+          </div>
+          <div className={styles.settingsCategoryOptions}> CC</div>
         </div>
       </div>
     </>

@@ -28,7 +28,8 @@ export async function GET(request: NextRequest) {
      * 2) non dobbiamo manipolare i singoli chunk e quindi accedere alla proprieta
      *    .read e gestire i vari chunk.
      * 
-     * Il tutto e possibile solo perche youtube fornisce url con audio completo
+     * Il tutto e possibile solo perche youtube fornisce url con audio completo e 
+     * facendo la fetch ottengo una readableStream.
      * se no non era possibile
      */
     const stream = await fetch(audioURL, {

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   const conn = DBConnection();
   const query = "SELECT * FROM users WHERE username = ?";
 
-  const [rows, fields] = await conn.execute(query, [username]);
+  const [rows] = await conn.execute(query, [username]);
 
   // Check if user exists
   if ((rows as any[]).length > 0) {

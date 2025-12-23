@@ -48,6 +48,16 @@ h1 {
 h2 {
   font-size: 1.875em; /* 1.875 * 16 = 30px */
 }
+h3 {
+    font-size: 1.15em;
+}
+
+/*Sub heading */
+h4 {
+    font-size: 1.15em;
+    color: var(--secondary-text-color);
+    font-weight: 500;
+}
 
 .hidden {
     display: none !important;

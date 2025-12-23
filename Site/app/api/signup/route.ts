@@ -25,8 +25,8 @@ export async function POST(request: Request) {
     const findUsername = "SELECT * FROM users WHERE username = ?";
     const saveUser = "INSERT INTO users (uuid, username, email, password) VALUES(?, ?, ?, ?)";
 
-    const [rows, fields] = await conn.execute(findUsername, [username]);
-    const defaultAvatar = '/default/defaultAvatar'
+    const [rows] = await conn.execute(findUsername, [username]);
+    const defaultAvatar = '/default/defaultAvatar.png'
 
     // Check if username already exists
     if((rows as any[]).length > 0){

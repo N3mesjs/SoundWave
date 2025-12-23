@@ -134,25 +134,60 @@
 .settingsBackdrop {
     position: fixed;
     display: none;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.621),
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+
+    outline: solid 2px pink;
+    background-color: rgba(0, 0, 0, 0.535);
+    z-index: 9990;
 }
 
 .settingsContainer {
     position: absolute;
-    display: none;
-    width: 90%;
+    display: grid;
+    width: 60%;
     height: 90%;
     z-index: 9999;
     top: 50%;
     left: 50%;
 
-    transform: translate(-50%, -50%);
+    grid-template-columns: 350px 1fr;
 
-    background-color: var(--highlight-color);
+    border-radius: 1rem;
+
+    overflow: auto;
+
+    transform: translate(-50%, -50%);
+}
+
+.settingsCategories {
+    padding: 2.5rem;
+    background-color: var(--primary-color);
+}
+
+.settingsCategories button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: inherit;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+.settingsCategories button:hover {
+    background-color: var(--accent-color);
+}
+
+.settingsCategoryOptions {
+    padding: 2.5rem;
+    background-color: var(--secondary-color);
 }
 
 .settingsBackdrop.show {
     display: flex !important;
+    justify-content: center;
+    align-items: center;
 }
